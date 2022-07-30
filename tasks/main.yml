@@ -5,6 +5,7 @@
       name: jstet.initial_server_setup
     vars:
       extra_packages: 
+          - apache2-utils
           - "{{ extra_packages }}"
       firewall: no
   - name: Installing Docker
@@ -20,7 +21,7 @@
 
 - name: Set up firewall
   become: true
-  import_tasks: tasks/firewall.yml
+  import_tasks: tasks/sub_tasks/firewall.yml
 
 - name: creating directory for docker compose
   file:

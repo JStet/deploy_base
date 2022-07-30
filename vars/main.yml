@@ -5,7 +5,6 @@ extra_packages:
   - htop
   - vim
   - net-tools
-  - apache2-utils
 
 GRAFANA_PW: 1234
 
