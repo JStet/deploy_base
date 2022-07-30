@@ -17,5 +17,18 @@ galaxy_info:
     - proxy
 dependencies: 
   - role: jstet.initial_server_setup
+    vars: 
+      firewall: false
+      extra_packages: "{{ ['apache2-utils'] + packages }}"
+      
+    become: true
+
   - role: geerlingguy.docker
+    vars:
+      docker_users:
+        - "{{  user  }}"
+      docker_daemon_options:
+        features:
+          buildkit: true
+    become: true
 

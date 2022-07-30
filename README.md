@@ -45,3 +45,4 @@ An optional section for the role authors to include contact information, or a we
 ### Docker Swarm
 - https://gabrieltanner.org/blog/docker-swarm/
 - https://dockerswarm.rocks/
+- https://github.com/vegasbrianc/docker-traefik-prometheus

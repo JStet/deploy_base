@@ -1,6 +1,6 @@
 ---
 user: user
-extra_packages:
+packages:
   - htop
   - vim
   - net-tools

@@ -1,24 +1,4 @@
 ---
-- block:
-  - name: Initial server setup (security etc.)
-    include_role:
-      name: jstet.initial_server_setup
-    vars:
-      extra_packages: 
-          - apache2-utils
-          - "{{ extra_packages }}"
-      firewall: no
-  - name: Installing Docker
-    include_role:
-      name: geerlingguy.docker
-    vars:
-      docker_users:
-        - "{{  user  }}"
-      docker_daemon_options:
-        features:
-          buildkit: true
-  become: true
-
 - name: Set up firewall
   become: true
   import_tasks: tasks/sub_tasks/firewall.yml
@@ -70,3 +50,5 @@
 - name: deploy stack
   shell: |
     cd docker-compose && docker stack deploy -c docker-compose.yml main
+  
+ 
