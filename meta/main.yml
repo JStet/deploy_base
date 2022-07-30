@@ -1,16 +1,12 @@
 galaxy_info:
   author: Jonas Stettner
   description: This role sets the foundation for the deployment of a dockerized web app by taking care of security, setting up monitoring and a reverse proxy.
-
   license: MIT
-
   min_ansible_version: 2.1
-
   platforms:
   - name: Ubuntu
     versions:
-    - 20
-
+      - focal
   galaxy_tags: 
     - security
     - monitoring
@@ -19,7 +15,6 @@ galaxy_info:
     - docker
     - traefik
     - proxy
-
 dependencies: 
   - role: jstet.initial_server_setup
   - role: geerlingguy.docker
