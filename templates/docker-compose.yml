@@ -1,0 +1,163 @@
+version: "3.8"
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+      - monitoring
+    ports:
+      - 80:80
+      - 443:443
+      - 8080
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/traefik.yml:ro
+      - ./traefik/acme.json:/acme.json
+      - ./traefik/dynamic_conf.yml:/dynamic_conf.yml
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`{{  TRAEFIK_DOMAIN  }}`)"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users={{ cmd.stdout }}"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`{{  TRAEFIK_DOMAIN  }}`)"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "providers.file.filename=/dynamic_conf.yml"
+      - "traefik.http.routers.traefik-secure.middlewares=secHeaders@file,traefik-auth"
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports: 
+      - 9090
+    volumes:
+      - prometheus-data:/prometheus 
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'   
+    networks:
+      - monitoring
+    deploy:
+      placement:
+        constraints:
+        - node.role==manager
+      restart_policy:
+        condition: on-failure
+  
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100
+    networks:
+      - monitoring
+    deploy:
+      placement:
+        constraints:
+        - node.role==manager
+      restart_policy:
+        condition: on-failure
+
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080
+    networks:
+      - monitoring 
+    deploy:
+      placement:
+        constraints:
+        - node.role==manager
+      restart_policy:
+        condition: on-failure
+
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    depends_on:
+      - prometheus
+      - traefik
+    ports:
+      - 3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    networks:
+      - proxy
+      - monitoring
+    env_file:
+      - ./grafana/config.monitoring
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.entrypoints=http"
+        - "traefik.http.routers.grafana.rule=Host(`{{  MONITORING_DOMAIN  }}`)"
+        - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
+        - "traefik.http.routers.grafana-secure.entrypoints=https"
+        - "traefik.http.routers.grafana-secure.rule=Host(`{{  MONITORING_DOMAIN  }}`)"
+        - "traefik.http.routers.grafana-secure.tls=true"
+        - "traefik.http.routers.grafana-secure.tls.certresolver=http"
+        - "traefik.http.routers.grafana-secure.service=grafana"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+        - "traefik.docker.network=proxy"
+      placement:
+        constraints:
+        - node.role==manager
+      restart_policy:
+        condition: on-failure
+  
+
+networks:
+  proxy:
+    name: proxy
+  db:
+    name: db
+  monitoring:
+    name: monitoring
+
+volumes:
+  mongodb-data: {}
+  prometheus-data: {}
+  grafana_data: {}

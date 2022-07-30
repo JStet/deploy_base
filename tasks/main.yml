@@ -1,0 +1,71 @@
+---
+- block:
+  - name: Initial server setup (security etc.)
+    include_role:
+      name: jstet.initial_server_setup
+    vars:
+      extra_packages: 
+          - "{{ extra_packages }}"
+      firewall: no
+  - name: Installing Docker
+    include_role:
+      name: geerlingguy.docker
+    vars:
+      docker_users:
+        - "{{  user  }}"
+      docker_daemon_options:
+        features:
+          buildkit: true
+  become: true
+
+- name: Set up firewall
+  become: true
+  import_tasks: tasks/firewall.yml
+
+- name: creating directory for docker compose
+  file:
+    path: "/home/{{  user  }}/docker-compose"
+    state: directory
+
+- name: copying files needed fo docker compose to server
+  copy:
+    src: files/docker-compose/
+    dest: "/home/{{  user  }}/docker-compose"
+    force: true
+
+- name: templating grafana config file to server
+  template:
+    src: templates/config.j2
+    dest: /home/{{  user  }}/docker-compose/grafana/config.monitoring
+    force: true
+
+- name: templating traefik config file to server
+  template:
+    src: templates/traefik.j2
+    dest: "/home/{{  user  }}/docker-compose/traefik/traefik.yml"   
+    force: true  
+
+- name: generating traefik user and pw 
+  shell: |
+    echo $(htpasswd -nb {{  TRAEFIK_USER  }} {{  TRAEFIK_PW  }}) | sed -e s/\\$/\\$\\$/g
+  register: cmd
+
+- name: making sure acne.json file exists and it has the right permissions
+  copy:
+    dest: "/home/{{  user  }}/docker-compose/traefik/acme.json"
+    mode: g-rw 
+    force: no
+    content: ""
+
+- name: templating docker-compose.yml to server
+  template:
+    src: templates/docker-compose.j2
+    dest: "/home/{{  user  }}/docker-compose/docker-compose.yml"
+    force: true
+
+- name: startin docker swarm mode
+  command:  docker swarm init
+
+- name: deploy stack
+  shell: |
+    cd docker-compose && docker stack deploy -c docker-compose.yml main

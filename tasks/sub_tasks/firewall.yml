@@ -1,0 +1,19 @@
+---
+- name: default ufw pol
+  shell: |
+    ufw default deny incoming
+    ufw default allow outgoing
+
+- name: change conf file
+  copy:
+      src: files/ufw/after.rules
+      dest: /etc/ufw/after.rules
+
+- name: allowing http/https/ssh
+  shell: |
+    ufw route allow proto tcp from any to any port 80
+    ufw route allow proto tcp from any to any port 443
+    ufw allow ssh
+    yes 'y' | ufw enable
+
+

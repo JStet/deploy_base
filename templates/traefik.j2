@@ -1,0 +1,25 @@
+api:
+  dashboard: false
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    swarmMode: true
+  file:
+    filename: "./dynamic_conf.yml"
+certificatesResolvers:
+  http:
+    acme:
+      email: {{  LETSENCRYPT_EMAIL  }}
+      storage: acme.json
+      httpChallenge:
+        entryPoint: http
+metrics:
+  prometheus: {}
+
+  
