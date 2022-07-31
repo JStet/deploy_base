@@ -1,12 +1,21 @@
-base_deploy
+deploy_base
 =========
 
 This role sets the foundation for the deployment of a dockerized web app by taking care of security and deploying a docker swarm containing monitoring services and reverse proxy (traefik).
+
+Also find it on [Ansible Galaxy](https://galaxy.ansible.com/jstet/deploy_base)
 
 Requirements
 ------------
 
 A user with posswordless sudo privileges should be set up on the server. Personally I take care of that with a cloud config file. You need to "become" and gather facts for this role to work.
+
+Role Variables
+--------------
+
+```
+ansible-galaxy install jstet.deploy_base
+```
 
 Role Variables
 --------------
@@ -34,10 +43,6 @@ Vars needed for setting up Traefik. The password for the user "admin" and the do
 ```
 TRAEFIK_DOMAIN: traefik.localhost
 TRAEFIK_PW: 1234
-```
-Do you want the Traefik dashboard or not? "false" for disabling it.
-```
-TRAEFIK_DASHBOARD: true
 ```
 
 The email used for administering a certificate with letsencrypt.
@@ -74,7 +79,6 @@ Example Playbook
           TRAEFIK_DOMAIN: traefik.example.net
           TRAEFIK_PW: "{{ TRAEFIK_PW_VAULT }}"
           TRAEFIK_USER: admin
-          TRAEFIK_DASHBOARD: true
   tasks:
 
 License
