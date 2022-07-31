@@ -1,14 +1,14 @@
 ---
-- name: Set up firewall
+- name: Reboot
   become: true
-  import_tasks: tasks/sub_tasks/firewall.yml
+  reboot:
 
 - name: creating directory for docker compose
   file:
     path: "/home/{{  user  }}/docker-compose"
     state: directory
 
-- name: copying files needed fo docker compose to server
+- name: copying files needed for docker compose to server
   copy:
     src: files/docker-compose/
     dest: "/home/{{  user  }}/docker-compose"
@@ -28,15 +28,17 @@
 
 - name: generating traefik user and pw 
   shell: |
-    echo $(htpasswd -nb {{  TRAEFIK_USER  }} {{  TRAEFIK_PW  }}) | sed -e s/\\$/\\$\\$/g
+    echo $(htpasswd -nb admin {{  TRAEFIK_PW  }}) | sed -e s/\\$/\\$\\$/g
   register: cmd
 
-- name: making sure acne.json file exists and it has the right permissions
+- name: making sure acne.json file exists...
   copy:
-    dest: "/home/{{  user  }}/docker-compose/traefik/acme.json"
-    mode: g-rw 
+    dest: "/home/{{  user  }}/docker-compose/traefik/acme.json" 
     force: no
     content: ""
+
+- name: ...and has right permissions
+  command: "chmod 600 /home/{{  user  }}/docker-compose/traefik/acme.json"
 
 - name: templating docker-compose.yml to server
   template:
@@ -44,11 +46,16 @@
     dest: "/home/{{  user  }}/docker-compose/docker-compose.yml"
     force: true
 
-- name: startin docker swarm mode
+- name: starting docker swarm mode
   command:  docker swarm init
+  ignore_errors: true
 
 - name: deploy stack
   shell: |
-    cd docker-compose && docker stack deploy -c docker-compose.yml main
+    cd docker-compose && docker stack deploy -c docker-compose.yml base
+
+# - name: Set up firewall
+#   become: true
+#   import_tasks: tasks/sub_tasks/firewall.yml
   
  

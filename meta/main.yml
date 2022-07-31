@@ -1,6 +1,6 @@
 galaxy_info:
   author: Jonas Stettner
-  description: This role sets the foundation for the deployment of a dockerized web app by taking care of security, setting up monitoring and a reverse proxy.
+  description: This role sets the foundation for the deployment of a dockerized web app by taking care of security and deploying a docker swarm containing monitoring services and reverse proxy (traefik).
   license: MIT
   min_ansible_version: 2.1
   platforms:
@@ -19,8 +19,7 @@ dependencies:
   - role: jstet.initial_server_setup
     vars: 
       firewall: false
-      extra_packages: "{{ ['apache2-utils'] + packages }}"
-      
+      extra_packages: "{{ ['ufw'] + ['apache2-utils'] + packages }}"
     become: true
 
   - role: geerlingguy.docker

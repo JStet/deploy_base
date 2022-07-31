@@ -1,47 +1,112 @@
-Role Name
+base_deploy
 =========
 
-A brief description of the role goes here.
+This role sets the foundation for the deployment of a dockerized web app by taking care of security and deploying a docker swarm containing monitoring services and reverse proxy (traefik).
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+A user with posswordless sudo privileges should be set up on the server. Personally I take care of that with a cloud config file. You need to "become" and gather facts for this role to work.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+A user with passwordless sudo privileges that will execute all docker tasks.
+```
+user: user
+```
+
+Extra packages you want to install on the server.
+```
+packages:
+  - htop
+  - vim
+  - net-tools
+```
+
+Vars needed for setting up Grafana. The password for the user "admin" and the domain on which you want to reach Grafana.
+```
+GRAFANA_PW: 1234
+MONITORING_DOMAIN: monitoring.localhost
+```
+
+Vars needed for setting up Traefik. The password for the user "admin" and the domain on which you want to reach Traefik. 
+```
+TRAEFIK_DOMAIN: traefik.localhost
+TRAEFIK_PW: 1234
+```
+Do you want the Traefik dashboard or not? "false" for disabling it.
+```
+TRAEFIK_DASHBOARD: true
+```
+
+The email used for administering a certificate with letsencrypt.
+```
+LETSENCRYPT_EMAIL: mail@example.com
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role uses jstet.initial_server_setup and geerlingguy.docker. Will be installed automatically with the needed parameters.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+---
+- hosts: all
+  gather_facts: yes
+  become: no
+  vars_files:
+    - vars/vault.yml
+  roles:
+    - role: deploy_base
+      vars:
+          packages: 
+              - htop
+              - vim
+              - net-tools
+          user: user
+          GRAFANA_PW: "{{ GRAFANA_PW_VAULT }}"
+          LETSENCRYPT_EMAIL: example@mail,de
+          MONITORING_DOMAIN: data.example.net
+          TRAEFIK_DOMAIN: traefik.example.net
+          TRAEFIK_PW: "{{ TRAEFIK_PW_VAULT }}"
+          TRAEFIK_USER: admin
+          TRAEFIK_DASHBOARD: true
+  tasks:
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+jstet.net
 
 ## Sources
 
+### iptables and docker
+- https://github.com/chaifeng/ufw-docker#solving-ufw-and-docker-issues
+### Prometheus
+#### Node exporter
+- https://prometheus.io/docs/guides/node-exporter/
+### Docker and Prometheus
+- https://schroederdennis.de/allgemein/prometheus-mit-docker-installieren-und-einrichten-anleitung/
+- https://github.com/vegasbrianc/prometheus/blob/master/docker-compose.yml
+- https://prometheus.io/docs/guides/cadvisor/
+- https://logz.io/blog/prometheus-tutorial-docker-monitoring/#systemdocker
+### Grafana
+- https://www.howtogeek.com/devops/how-to-run-grafana-in-a-docker-container/
+### nginx-exporter
+- https://github.com/nginxinc/nginx-prometheus-exporter/issues/30
+### promtail and loki
+- https://blog.lrvt.de/log-visualization-with-grafana-loki-promtail/
 ### Traefik
 - https://goneuland.de/traefik-v2-reverse-proxy-fuer-docker-unter-debian-10-einrichten/
-
 ### Docker Swarm
 - https://gabrieltanner.org/blog/docker-swarm/
 - https://dockerswarm.rocks/
