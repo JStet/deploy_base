@@ -40,6 +40,17 @@
 - name: ...and has right permissions
   command: "chmod 600 /home/{{  user  }}/docker-compose/traefik/acme.json"
 
+- name: creating directory for alertmanager
+  file:
+    path: "/home/{{  user  }}/docker-compose/alertmanager"
+    state: directory
+
+- name: templating alertmanager config file to server
+  template:
+    src: templates/alertmanager.j2
+    dest: "/home/{{  user  }}/docker-compose/alertmanager/alertmanager.yml"   
+    force: true  
+
 - name: templating docker-compose.yml to server
   template:
     src: templates/docker-compose.j2
