@@ -48,7 +48,7 @@
 - name: templating alertmanager config file to server
   template:
     src: templates/alertmanager.j2
-    dest: "/home/{{  user  }}/docker-compose/alertmanager/alertmanager.yml"   
+    dest: "/home/{{  user  }}/docker-compose/alertmanager/config.yml"   
     force: true  
 
 - name: templating docker-compose.yml to server
