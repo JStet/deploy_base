@@ -2,6 +2,17 @@
 global:
   scrape_interval: 15s 
   evaluation_interval: 15s 
+
+rule_files:
+  - rules.yml
+
+# Alerting specifies settings related to the Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        # Alertmanager's default port is 9093
+        - base_alertmanager:9093
  
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.

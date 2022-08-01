@@ -9,6 +9,7 @@ LETSENCRYPT_EMAIL: mail@example.com
 MONITORING_DOMAIN: monitoring.localhost
 TRAEFIK_DOMAIN: traefik.localhost
 TRAEFIK_PW: 1234
+SLACK_WEBHOOK: example.com
 
 
 

@@ -1,7 +1,7 @@
 deploy_base
 =========
 
-This role sets the foundation for the deployment of a dockerized web app by taking care of security and deploying a docker swarm containing monitoring services and reverse proxy (traefik).
+This role sets the foundation for the deployment of a dockerized web app by taking care of security and deploying a docker swarm containing monitoring services, an alert manager and areverse proxy (traefik).
 
 Also find it on [Ansible Galaxy](https://galaxy.ansible.com/jstet/deploy_base)
 
@@ -115,3 +115,9 @@ jstet.net
 - https://gabrieltanner.org/blog/docker-swarm/
 - https://dockerswarm.rocks/
 - https://github.com/vegasbrianc/docker-traefik-prometheus
+### Alertmanager
+- https://github.com/vegasbrianc/prometheus
+- https://medium.com/techno101/how-to-send-a-mail-using-prometheus-alertmanager-7e880a3676db
+- https://api.slack.com/messaging/webhooks
+- https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+- https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/
