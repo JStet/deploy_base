@@ -54,6 +54,7 @@ Example Playbook
 ----------------
 
 ---
+```
 - hosts: all
   gather_facts: yes
   become: no
@@ -72,6 +73,7 @@ Example Playbook
           MONITORING_DOMAIN: data.example.net
           TRAEFIK_USER: admin
   tasks:
+```
 
 License
 -------
