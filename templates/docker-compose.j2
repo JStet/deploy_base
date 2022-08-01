@@ -157,7 +157,18 @@ services:
         constraints:
            - node.role==manager
       restart_policy:
-        condition: on-failure    
+        condition: on-failure 
+
+  registry:
+    image: registry:2
+    ports:
+    - 5000:5000 
+    deploy:
+      placement:
+        constraints:
+           - node.role==manager
+      restart_policy:
+        condition: on-failure 
 
 networks:
   proxy:
