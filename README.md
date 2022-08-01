@@ -39,9 +39,8 @@ GRAFANA_PW: 1234
 MONITORING_DOMAIN: monitoring.localhost
 ```
 
-Vars needed for setting up Traefik. The password for the user "admin" and the domain on which you want to reach Traefik. 
+Vars needed for setting up Traefik. The password for the user "admin".
 ```
-TRAEFIK_DOMAIN: traefik.localhost
 TRAEFIK_PW: 1234
 ```
 
@@ -76,7 +75,6 @@ Example Playbook
           GRAFANA_PW: "{{ GRAFANA_PW_VAULT }}"
           LETSENCRYPT_EMAIL: example@mail,de
           MONITORING_DOMAIN: data.example.net
-          TRAEFIK_DOMAIN: traefik.example.net
           TRAEFIK_PW: "{{ TRAEFIK_PW_VAULT }}"
           TRAEFIK_USER: admin
   tasks:
