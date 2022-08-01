@@ -1,7 +1,7 @@
 ---
-# - name: Reboot
-#   become: true
-#   reboot:
+- name: Reboot
+  become: true
+  reboot:
 
 - name: creating directory for docker compose
   file:
