@@ -119,3 +119,13 @@ jstet.net
 - https://api.slack.com/messaging/webhooks
 - https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
 - https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/
+
+## Misc
+
+### Testing alertmanager
+
+```
+docker service create --replicas 1 --name test --network=monitoring alpine/curl:3.14
+docker exec -it .... sh
+curl -H 'Content-Type: application/json' -d '[{"labels":{"alertname":"hallo hallo"}}]' http://alertmanager:9093/api/v1/alerts
+```

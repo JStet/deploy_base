@@ -25,12 +25,7 @@
     src: templates/traefik.j2
     dest: "/home/{{  user  }}/docker-compose/traefik/traefik.yml"   
     force: true  
-
-- name: generating traefik user and pw 
-  shell: |
-    echo $(htpasswd -nb admin {{  TRAEFIK_PW  }}) | sed -e s/\\$/\\$\\$/g
-  register: cmd
-
+    
 - name: making sure acne.json file exists...
   copy:
     dest: "/home/{{  user  }}/docker-compose/traefik/acme.json" 
