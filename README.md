@@ -39,11 +39,6 @@ GRAFANA_PW: 1234
 MONITORING_DOMAIN: monitoring.localhost
 ```
 
-Vars needed for setting up Traefik. The password for the user "admin".
-```
-TRAEFIK_PW: 1234
-```
-
 The email used for administering a certificate with letsencrypt.
 ```
 LETSENCRYPT_EMAIL: mail@example.com
@@ -75,7 +70,6 @@ Example Playbook
           GRAFANA_PW: "{{ GRAFANA_PW_VAULT }}"
           LETSENCRYPT_EMAIL: example@mail,de
           MONITORING_DOMAIN: data.example.net
-          TRAEFIK_PW: "{{ TRAEFIK_PW_VAULT }}"
           TRAEFIK_USER: admin
   tasks:
 
