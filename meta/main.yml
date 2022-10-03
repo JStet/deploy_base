@@ -16,18 +16,18 @@ galaxy_info:
     - traefik
     - proxy
 dependencies: 
-  - role: jstet.initial_server_setup
-    vars: 
-      extra_packages: "{{ ['ufw'] + ['apache2-utils'] + packages }}"
-      firewall: false
-    become: true
+  # - role: jstet.initial_server_setup
+  #   vars: 
+  #     extra_packages: "{{ ['ufw'] + ['apache2-utils'] + packages }}"
+  #     firewall: false
+  #   become: true
 
-  - role: geerlingguy.docker
-    vars:
-      docker_users:
-        - "{{  user  }}"
-      docker_daemon_options:
-        features:
-          buildkit: true
-    become: true
+  # - role: geerlingguy.docker
+  #   vars:
+  #     docker_users:
+  #       - "{{  user  }}"
+  #     docker_daemon_options:
+  #       features:
+  #         buildkit: true
+  #   become: true
 

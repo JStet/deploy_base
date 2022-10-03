@@ -10,6 +10,12 @@
     dest: /home/{{  user  }}/plausible/plausible-conf.env
     force: true
 
+- name: templating plausible docker compose file to server:q
+  template:
+    src: templates/plausible_docker-compose.j2
+    dest: /home/{{  user  }}/plausible/docker-compose.yml
+    force: true
+
 - name: templating smtp config file to server
   template:
     src: templates/plausible-smtp.j2

@@ -1,65 +1,65 @@
 ---
-# Rebooting after the roles this role is based on have done their work
-- name: Reboot
-  become: true
-  reboot:
+# # Rebooting after the roles this role is based on have done their work
+# - name: Reboot
+#   become: true
+#   reboot:
 
-- name: creating directory for docker compose
-  file:
-    path: "/home/{{  user  }}/docker-compose"
-    state: directory
+# - name: creating directory for docker compose
+#   file:
+#     path: "/home/{{  user  }}/docker-compose"
+#     state: directory
 
-- name: copying files needed for docker compose to server
-  copy:
-    src: files/docker-compose/
-    dest: "/home/{{  user  }}/docker-compose"
-    force: true
+# - name: copying files needed for docker compose to server
+#   copy:
+#     src: files/docker-compose/
+#     dest: "/home/{{  user  }}/docker-compose"
+#     force: true
 
-- name: templating grafana config file to server
-  template:
-    src: templates/config.j2
-    dest: /home/{{  user  }}/docker-compose/grafana/config.monitoring
-    force: true
+# - name: templating grafana config file to server
+#   template:
+#     src: templates/config.j2
+#     dest: /home/{{  user  }}/docker-compose/grafana/config.monitoring
+#     force: true
 
-- name: templating traefik config file to server
-  template:
-    src: templates/traefik.j2
-    dest: "/home/{{  user  }}/docker-compose/traefik/traefik.yml"   
-    force: true  
+# - name: templating traefik config file to server
+#   template:
+#     src: templates/traefik.j2
+#     dest: "/home/{{  user  }}/docker-compose/traefik/traefik.yml"   
+#     force: true  
     
-- name: making sure acne.json file exists...
-  copy:
-    dest: "/home/{{  user  }}/docker-compose/traefik/acme.json" 
-    force: no
-    content: ""
+# - name: making sure acne.json file exists...
+#   copy:
+#     dest: "/home/{{  user  }}/docker-compose/traefik/acme.json" 
+#     force: no
+#     content: ""
 
-- name: ...and has right permissions
-  command: "chmod 600 /home/{{  user  }}/docker-compose/traefik/acme.json"
+# - name: ...and has right permissions
+#   command: "chmod 600 /home/{{  user  }}/docker-compose/traefik/acme.json"
 
-- name: creating directory for alertmanager
-  file:
-    path: "/home/{{  user  }}/docker-compose/alertmanager"
-    state: directory
+# - name: creating directory for alertmanager
+#   file:
+#     path: "/home/{{  user  }}/docker-compose/alertmanager"
+#     state: directory
 
-- name: templating alertmanager config file to server
-  template:
-    src: templates/alertmanager.j2
-    dest: "/home/{{  user  }}/docker-compose/alertmanager/config.yml"   
-    force: true  
+# - name: templating alertmanager config file to server
+#   template:
+#     src: templates/alertmanager.j2
+#     dest: "/home/{{  user  }}/docker-compose/alertmanager/config.yml"   
+#     force: true  
 
-- name: templating docker-compose.yml to server
-  template:
-    src: templates/docker-compose.j2
-    dest: "/home/{{  user  }}/docker-compose/docker-compose.yml"
-    force: true
+# - name: templating docker-compose.yml to server
+#   template:
+#     src: templates/docker-compose.j2
+#     dest: "/home/{{  user  }}/docker-compose/docker-compose.yml"
+#     force: true
 
-- name: starting docker swarm mode
-  command:  docker swarm init
-  ignore_errors: true
+# - name: starting docker swarm mode
+#   command:  docker swarm init
+#   ignore_errors: true
 
-- name: deploy stack
-  shell: |
-    cd docker-compose && docker stack deploy -c docker-compose.yml base
+# - name: deploy stack
+#   shell: |
+#     cd docker-compose && docker stack deploy -c docker-compose.yml base
 
 - name: Deploy plausible
   become: true
