@@ -18,8 +18,8 @@ galaxy_info:
 dependencies: 
   - role: jstet.initial_server_setup
     vars: 
-      firewall: false
       extra_packages: "{{ ['ufw'] + ['apache2-utils'] + packages }}"
+      firewall: false
     become: true
 
   - role: geerlingguy.docker

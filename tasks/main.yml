@@ -65,8 +65,8 @@
   become: true
   import_tasks: tasks/sub_tasks/plausible.yml
 
-- name: Set up firewall
+- name: Set up plausible
   become: true
-  import_tasks: tasks/sub_tasks/firewall.yml
+  import_tasks: tasks/sub_tasks/plausible.yml
   
  
