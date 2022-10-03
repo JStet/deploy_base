@@ -18,5 +18,5 @@
 
 - name: docker compose plausible
   shell: |
-    cd hosting && docker stack deploy -c docker-compose.yml plausible
+    cd plausible && docker stack deploy -c docker-compose.yml plausible
 
