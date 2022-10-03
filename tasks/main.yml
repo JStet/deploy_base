@@ -65,6 +65,10 @@
   become: true
   import_tasks: tasks/sub_tasks/plausible.yml
 
+- name: deploy local container registry
+  shell: |
+    docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
 - name: Set up firewall
   become: true
   import_tasks: tasks/sub_tasks/firewall.yml

@@ -57,6 +57,7 @@ services:
     networks:
       - monitoring
     deploy:
+      mode: global
       placement:
         constraints:
         - node.role==manager
@@ -79,6 +80,7 @@ services:
     networks:
       - monitoring
     deploy:
+      mode: global
       placement:
         constraints:
         - node.role==manager
@@ -100,6 +102,7 @@ services:
     networks:
       - monitoring 
     deploy:
+      mode: global
       placement:
         constraints:
         - node.role==manager
@@ -136,6 +139,7 @@ services:
         - "traefik.http.routers.grafana-secure.service=grafana"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
         - "traefik.docker.network=proxy"
+      mode: global
       placement:
         constraints:
         - node.role==manager
@@ -154,17 +158,7 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
     deploy:
-      placement:
-        constraints:
-           - node.role==manager
-      restart_policy:
-        condition: on-failure 
-
-  registry:
-    image: registry:2
-    ports:
-    - 5000:5000 
-    deploy:
+      mode: global
       placement:
         constraints:
            - node.role==manager
