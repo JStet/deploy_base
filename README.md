@@ -16,7 +16,6 @@ This docker swarm contains:
 - Alertmanager
 - Grafana
 - Plausible Web Analytics
-- Local docker registry
 
 ## Requirements
 

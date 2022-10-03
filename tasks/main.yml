@@ -1,8 +1,8 @@
 ---
 # Rebooting after the roles this role is based on have done their work
-- name: Reboot
-  become: true
-  reboot:
+# - name: Reboot
+#   become: true
+#   reboot:
 
 - name: creating directory for docker compose
   file:
@@ -64,10 +64,6 @@
 - name: Deploy plausible
   become: true
   import_tasks: tasks/sub_tasks/plausible.yml
-
-- name: deploy local container registry
-  shell: |
-    docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
 - name: Set up firewall
   become: true
