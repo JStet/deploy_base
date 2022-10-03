@@ -61,6 +61,10 @@
   shell: |
     cd docker-compose && docker stack deploy -c docker-compose.yml base
 
+- name: Deploy plausible
+  become: true
+  import_tasks: tasks/sub_tasks/firewall.yml
+
 - name: Set up firewall
   become: true
   import_tasks: tasks/sub_tasks/firewall.yml

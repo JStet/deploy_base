@@ -7,8 +7,17 @@ packages:
 GRAFANA_PW: 1234
 LETSENCRYPT_EMAIL: mail@example.com
 MONITORING_DOMAIN: monitoring.localhost
-TRAEFIK_PW: 1234
 SLACK_WEBHOOK: example.com
+PLAUSIBLE_ADMIN_EMAIL: mail@jstet.net 
+PLAUSIBLE_ADMIN: user
+PLAUSIBLE_ADMIN_PW: pw
+PLAUSIBLE_URL: url
+PLAUSIBLE_KEY: 64
+MAILER_EMAIL: bot@jstet.net
+SMTP_HOST_ADDR: mail.your-server.de
+SMTP_HOST_PORT: 587
+SMTP_USER_NAME: bot@jstet.net
+SMTP_USER_PWD: 78FH9zo8Ygv7Zm09
 
 
 

@@ -15,6 +15,7 @@ This docker swarm contains:
 - Node Exporter
 - Alertmanager
 - Grafana
+- Plausible Web Analytics
 - Local docker registry
 
 ## Requirements
@@ -122,6 +123,9 @@ jstet.net
 - https://api.slack.com/messaging/webhooks
 - https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
 - https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/
+
+### Plausible
+- https://plausible.io/docs/self-hosting
 
 ## Misc
 
