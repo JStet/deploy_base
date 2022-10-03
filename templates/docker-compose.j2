@@ -1,5 +1,6 @@
 version: "3.8"
 services:
+
   traefik:
     image: traefik:latest
     security_opt:
@@ -179,6 +180,5 @@ networks:
     driver: overlay
 
 volumes:
-  mongodb-data: {}
   prometheus-data: {}
   grafana_data: {}

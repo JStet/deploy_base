@@ -1,24 +1,34 @@
-deploy_base
-=========
+# deploy_base
 
-This role sets the foundation for the deployment of a dockerized web app by taking care of security and deploying a docker swarm containing monitoring services, an alert manager and areverse proxy (traefik).
+
+This role creates a foundation for the deployment of dockerized web apps by setting up a linux server (including security) and deploying a docker swarm containing monitoring services, an alert manager and a reverse proxy.
 
 Also find it on [Ansible Galaxy](https://galaxy.ansible.com/jstet/deploy_base)
 
-Requirements
-------------
+One use of this setup is to allow you to deploy multiple apps on one server. This can help you save hosting costs. Traefik will redirect incoming requests to the right docker container. Find an instruction on how to deploy an app to this setup and how to add an automatic deploy function with Github Workflows in [this repo](https://github.com/jstet/jstet_iac).
+
+This docker swarm contains:
+
+- Traefik
+- Prometheus
+- CAdvisor
+- Node Exporter
+- Alertmanager
+- Grafana
+- Local docker registry
+
+## Requirements
 
 A user with posswordless sudo privileges should be set up on the server. Personally I take care of that with a cloud config file. You need to "become" and gather facts for this role to work.
 
-Role Variables
---------------
+## Role Variables
 
 ```
 ansible-galaxy install jstet.deploy_base
 ```
 
-Role Variables
---------------
+## Role Variables
+
 
 A user with passwordless sudo privileges that will execute all docker tasks.
 ```
@@ -44,15 +54,13 @@ The email used for administering a certificate with letsencrypt.
 LETSENCRYPT_EMAIL: mail@example.com
 ```
 
-Dependencies
-------------
+## Dependencies
+
 
 This role uses jstet.initial_server_setup and geerlingguy.docker. Will be installed automatically with the needed parameters.
 
 
-Example Playbook
-----------------
-
+## Example Playbook
 ---
 ```
 - hosts: all
@@ -75,13 +83,12 @@ Example Playbook
   tasks:
 ```
 
-License
--------
+## License
+
 
 MIT
 
-Author Information
-------------------
+## Author Information
 
 jstet.net
 
@@ -117,6 +124,7 @@ jstet.net
 - https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/
 
 ## Misc
+
 
 ### Testing alertmanager
 

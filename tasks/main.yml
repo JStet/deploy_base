@@ -1,4 +1,5 @@
 ---
+# Rebooting after the roles this role is based on have done their work
 - name: Reboot
   become: true
   reboot:
