@@ -8,11 +8,6 @@
     ufw default deny incoming
     ufw default allow outgoing
 
-# - name: change conf file
-#   copy:
-#       src: files/ufw/after.rules
-#       dest: /etc/ufw/after.rules
-
 - name: allowing http/https/ssh
   shell: |
     ufw allow http

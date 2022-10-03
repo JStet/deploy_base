@@ -18,7 +18,6 @@ galaxy_info:
 dependencies: 
   - role: jstet.initial_server_setup
     vars: 
-    # docker not very compatible with firehol
       firewall: false
       extra_packages: "{{ ['ufw'] + ['apache2-utils'] + packages }}"
     become: true
