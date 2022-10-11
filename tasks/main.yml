@@ -1,8 +1,8 @@
 ---
 # Rebooting after the roles this role is based on have done their work
-# - name: Reboot
-#   become: true
-#   reboot:
+- name: Reboot
+  become: true
+  reboot:
 
 - name: creating directory for docker compose
   file:
@@ -61,12 +61,6 @@
   shell: |
     cd docker-compose && docker stack deploy -c docker-compose.yml base
 
-- name: Deploy plausible
-  become: true
-  import_tasks: tasks/sub_tasks/plausible.yml
 
-- name: Set up firewall
-  become: true
-  import_tasks: tasks/sub_tasks/firewall.yml
   
  
